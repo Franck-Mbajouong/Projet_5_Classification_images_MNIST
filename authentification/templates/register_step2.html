@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription Étape 2</title>
+    <script src="{% static 'script/inscription2.js' %}" defer></script>
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/root.css' %}">
+</head>
+
+<body>
+    <section class="formSection">
+
+        <div class="login-container">
+            <div class="logo">
+                <img src="{% static 'image/logo2.svg' %}" alt="Logo">
+            </div>
+
+            <div class="titre">
+                <h1>Bienvenue sur CamStage</h1>
+                <p>Remplir les champs pour créer un compte</p>
+            </div>
+
+            {% if request.session.role == "recruteur" %}
+            <span id="{{user.type_utilisateur}}"></span>
+
+            <form id="myForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Champs recruteur -->
+                <div class="input-group">
+                    <label for="nomEntreprise">Nom de l'entreprise:</label>
+                    <input type="text" id="nomEntreprise" name="name_entreprise">
+                    <span id="nameError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="adresse">Adresse Principale:</label>
+                    <input type="text" id="adresse" name="adresse_entreprise">
+                    <span id="adresseError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="website">Site internet:</label>
+                    <input type="text" id="website" name="website">
+                    <span id="websiteError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="telephone">Téléphone:</label>
+                    <input type="number" id="telephone" name="telephone">
+                    <span id="telephoneError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="status">Forme légale:</label>
+                    <select id="status" name="forme_legale">
+                        <option value="">Sélectionner</option>
+                        <option value="entreprise">Entreprise</option>
+                        <option value="start up">Start-up</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <span id="statusError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="langue">Langue par défaut:</label>
+                    <select id="langue" name="langue">
+                        <option value="" disabled selected>Sélectionner une langue</option>
+                        <option value="francais">Français</option>
+                        <option value="anglais">Anglais</option>
+                    </select>
+                    <span id="langueError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="activiter">Secteur d'activité:</label>
+                    <select id="activiter" name="secteur">
+                        <option value="" disabled selected>Sélectionner un domaine</option>
+                        <option value="informatique">Informatique</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="finance">Finance</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <span id="activiterError" class="error"></span>
+                </div>
+
+<!--                <div class="input-group">-->
+<!--                    <label for="profile_photo">Logo de l'entreprise:</label>-->
+<!--                    <input type="file" id="profile_photo" name="logo" accept="image/*">-->
+<!--                    <span id="photoError" class="error"></span>-->
+<!--                </div>-->
+
+                <button type="submit" class="btn-login" id="submitBtn">Soumettre</button>
+            </form>
+
+            {% elif request.session.role  == "etudiant" %}
+            <span id="{{user.type_utilisateur}}"></span>
+            <form id="myForm" method="post">
+                {% csrf_token %}
+                <!-- Champs étudiant -->
+                <div class="input-group">
+                    <label for="name">Nom:</label>
+                    <input type="text" id="name" name="nom">
+                    <span id="nameError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="surname">Prénom:</label>
+                    <input type="text" id="surname" name="prenom">
+                    <span id="surnameError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="age">Âge:</label>
+                    <input type="date" id="age" name="age">
+                    <span id="ageError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="gender">Sexe:</label>
+                    <select id="gender" name="sexe">
+                        <option value="">Sélectionner</option>
+                        <option value="Masculin">Masculin</option>
+                        <option value="Féminin">Féminin</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                    <span id="genderError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="telephone">Téléphone:</label>
+                    <input type="number" id="telephone" name="telephone">
+                    <span id="telephoneError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="adresse">Adresse actuelle:</label>
+                    <input type="text" id="adresse" name="adresse">
+                    <span id="adresseError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="universiter">Niveau d’études:</label>
+                    <select id="universiter" name="niveau_etude" required>
+                        <option value="Qualifications avant bac">Qualifications avant bac</option>
+                        <option value="bac">Bac</option>
+                        <option value="Bac +1">Bac +1</option>
+                        <option value="Bac +2">Bac +2</option>
+                        <option value="Bac +3">Bac +3</option>
+                        <option value="Bac +4">Bac +4</option>
+                        <option value="Bac +5 et plus">Bac +5 et plus</option>
+                    </select>
+                    <span id="universiterError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="specialiter">Spécialité:</label>
+                    <input type="text" id="specialiter" name="specialite">
+                    <span id="specialiterError" class="error"></span>
+                </div>
+
+                <button type="submit" class="btn-login" id="submitBtn">Soumettre</button>
+            </form>
+            {% endif %}
+        </div>
+    </section>
+</body>
+
+</html>

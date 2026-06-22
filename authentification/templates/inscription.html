@@ -1,0 +1,78 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/root.css' %}">
+
+    <script src="{% static 'script/inscription.js' %}" defer></script>
+    <script src="{% static 'script/common.js' %}" defer></script>
+</head>
+
+<body>
+
+    <section class="formSection">
+
+        <div class="login-container">
+            <div class="logo">
+                <img src="{% static 'image/logo2.svg' %}" alt="Logo">
+            </div>
+            <div class="titre">
+                <h1>Bienvenue sur CamStage</h1>
+                <p>Remplir les champs pour créer un compte</p>
+            </div>
+
+            <form id="myForm" method="post" >
+                 {% csrf_token %}
+
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email">
+                    <span id="emailError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="role">Vous vous inscrivez en tant que:</label>
+                    <select id="role" name="role" required>
+                        <option value="etudiant">Candidat</option>
+                        <option value="recruteur">Recruteur</option>
+                    </select>
+                    <span id="roleError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password">
+                        <img id="togglePassword" class="toggle-password" src="{% static 'image/eye-close.svg' %}" alt="Afficher le mot de passe">
+                    </div>
+
+                    <span id="passwordError" class="error"></span>
+                </div>
+
+
+                <div class="input-group">
+                    <label for="confirmPassword">Confirmer le mot de passe:</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" name="confirmPassword">
+                        <img id="toggleConfirmPassword" class="toggle-password" src="{% static 'image/eye-close.svg' %}" alt="Afficher le mot de passe">
+                    </div>
+
+                    <span id="confirmPasswordError" class="error"></span>
+                </div>
+
+                <button type="submit" class="btn-login">Suivant</button>
+            </form>
+
+
+            <p class="register">Vous avez déjà un compte ? <a href="{% url 'connexion' %}">Me connecter</a></p>
+        </div>
+    </section>
+
+</body>
+
+</html>

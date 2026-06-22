@@ -1,0 +1,148 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/tableau.css' %}">
+
+    <script src="{% static 'script/common.js' %}" defer></script>
+<!--    <script src="{% static 'script/editProfil.js' %}" defer></script>-->
+
+    <title>Profil</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    {% include 'dashboard.html' %}
+
+    <section class="containerTableau">
+
+    {% if user.type_utilisateur == 'etudiant' %}
+        <h2>Soigne ton profil pour les recruteurs</h2>
+        <p>Fournis tes informations précises pour gagner du temps lors de tes candidatures. Elles serviront à pré-remplir automatiquement les formulaires !</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="name">Nom:</label>
+                <input type="text" id="name" name="nom" value="{{ user_data.nom }}">
+            </div>
+
+            <div class="input-group">
+                <label for="surname">Prénom:</label>
+                <input type="text" id="surname" name="prenom" value="{{ user_data.prenom }}">
+            </div>
+
+            <div class="input-group">
+                <label for="age">Âge:</label>
+                <input type="date" id="age" name="age" value="{{ user_data.age|date:'Y-m-d' }}">
+            </div>
+
+            <div class="input-group">
+                <label for="gender">Sexe:</label>
+                <select id="gender" name="sexe">
+                    <option value="Masculin" {% if user_data.sexe == "Masculin" %}selected{% endif %}>Masculin</option>
+                    <option value="Féminin" {% if user_data.sexe == "Féminin" %}selected{% endif %}>Féminin</option>
+                    <option value="Autre" {% if user_data.sexe == "Autre" %}selected{% endif %}>Autre</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="telephone">Téléphone:</label>
+                <input type="number" id="telephone" name="telephone" value="{{ user_data.telephone }}">
+            </div>
+
+            <div class="input-group">
+                <label for="adresse">Adresse actuelle:</label>
+                <input type="text" id="adresse" name="adresse" value="{{ user_data.adresse }}">
+            </div>
+
+            <div class="input-group">
+                <label for="niveau_etude">Niveau d’études :</label>
+                <select id="niveau_etude" name="niveau_etude">
+                    <option value="Licence 1" {% if user_data.niveau_etude == "Licence 1" %}selected{% endif %}>Licence 1</option>
+                    <option value="Licence 2" {% if user_data.niveau_etude == "Licence 2" %}selected{% endif %}>Licence 2</option>
+                    <option value="Licence 3" {% if user_data.niveau_etude == "Licence 3" %}selected{% endif %}>Licence 3</option>
+                    <option value="Master" {% if user_data.niveau_etude == "Master" %}selected{% endif %}>Master</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="specialiter">Spécialité:</label>
+                <input type="text" id="specialiter" name="specialiter" value="{{ user_data.specialiter }}">
+            </div>
+
+            <button type="submit" class="btn-login">Enregistrer</button>
+        </form>
+
+    {% elif user.type_utilisateur == 'recruteur' %}
+        <h2>Informations générales</h2>
+        <p>Ces informations seront utilisées lors de la création des annonces ou de l'affichage de votre fiche.</p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group">
+                <label for="nomEntreprise">Nom de l'entreprise:</label>
+                <input type="text" id="nomEntreprise" name="name_entreprise" value="{{ user_data.nom_entreprise }}">
+            </div>
+
+            <div class="input-group">
+                <label for="adresse">Adresse Principale:</label>
+                <input type="text" id="adresse" name="adresse_entreprise" value="{{ user_data.adresse_entreprise }}">
+            </div>
+
+            <div class="input-group">
+                <label for="site_internet">Site internet:</label>
+                <input type="text" id="site_internet" name="site_internet" value="{{ user_data.site_internet }}">
+            </div>
+
+            <div class="input-group">
+                <label for="contact">Contact:</label>
+                <input type="text" id="contact" name="contact" value="{{ user_data.contact }}">
+            </div>
+
+            <div class="input-group">
+                <label for="forme_legale">Forme légale:</label>
+                <select id="forme_legale" name="forme_legale">
+                    <option value="SARL" {% if user_data.forme_legale == "SARL" %}selected{% endif %}>SARL</option>
+                    <option value="SA" {% if user_data.forme_legale == "SA" %}selected{% endif %}>SA</option>
+                    <option value="Start-up" {% if user_data.forme_legale == "Start-up" %}selected{% endif %}>Start-up</option>
+                    <option value="Autre" {% if user_data.forme_legale == "Autre" %}selected{% endif %}>Autre</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="langue">Langue par défaut:</label>
+                <select id="langue" name="langue">
+                    <option value="Français" {% if user_data.langue == "Français" %}selected{% endif %}>Français</option>
+                    <option value="Anglais" {% if user_data.langue == "Anglais" %}selected{% endif %}>Anglais</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="activiter">Secteur d'activité:</label>
+                <select id="activiter" name="secteur">
+                    <option value="Informatique" {% if user_data.secteur == "Informatique" %}selected{% endif %}>Informatique</option>
+                    <option value="Finance" {% if user_data.secteur == "Finance" %}selected{% endif %}>Finance</option>
+                    <option value="Santé" {% if user_data.secteur == "Santé" %}selected{% endif %}>Santé</option>
+                    <option value="Autre" {% if user_data.secteur == "Autre" %}selected{% endif %}>Autre</option>
+                </select>
+            </div>
+
+<!--            <div class="input-group">-->
+<!--                <label for="profile_photo">Logo de l'entreprise:</label>-->
+<!--                <input type="file" id="profile_photo" name="logo">-->
+<!--            </div>-->
+
+            <button type="submit" class="btn-login">Enregistrer</button>
+        </form>
+    {% endif %}
+</section>
+
+
+</body>
+
+</html>

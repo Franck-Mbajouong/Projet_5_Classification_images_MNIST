@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - CamStage</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/header.css' %}">
+    <link rel="stylesheet" href="{% static 'style/root.css' %}">
+
+    <!-- JS -->
+    <script src="{% static 'script/common.js' %}" defer></script>
+    <script src="{% static 'script/connexion.js' %}" defer></script>
+
+</head>
+
+<body>
+
+    <section class="formSection">
+        <div class="login-container">
+            <div class="logo">
+                <img src="{% static 'image/logo2.svg' %}" alt="Logo">
+            </div>
+
+            <div class="titre">
+                <h1>Bienvenue sur CamStage</h1>
+                <p>Entrez vos identifiants pour vous connecter</p>
+            </div>
+
+            {% if messages %}
+<div class="messages">
+    <ul>
+        {% for message in messages %}
+        <li style="color: red; margin-bottom: 10px;">{{ message }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+            <form id="myForm" method="post" >
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" name="email">
+                    <span id="emailError" class="error"></span>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Mot de passe:</label>
+                    <div class="password-container">
+                        <input type="password" id="password" name="password">
+                        <img id="togglePassword" class="toggle-password" src="{% static 'image/eye-close.svg' %}" alt="Afficher le mot de passe">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">Se connecter</button>
+
+                <p class="register">
+                    Vous n'avez pas de compte ?
+                     <a href="{% url 'inscription' %}">Créer un compte</a>
+                </p>
+            </form>
+        </div>
+    </section>
+
+    <div id="notification" class="notification2"></div>
+</body>
+
+</html>
