@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/tableau.css' %}">
+    <script src="{% static 'script/common.js' %}" defer></script>
+    <script src="{% static 'script/creerAnnonce.js' %}" defer></script>
+    <title>Créer une annonce</title>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+    {% include 'dashboard.html' %}
+
+
+
+    <section class="containerTableau">
+
+    {% if annonce %}
+        <h2>Modifier l'annonce</h2>
+    {% else  %}
+
+        <h2>Créer une annonce</h2>
+
+    {% endif %}
+
+
+
+        <form method="post" id="FormAnnonce">
+    {% csrf_token %}
+
+    <div class="input-group">
+        <label for="title">Intitulé du stage</label>
+        <input type="text" id="title" name="title" placeholder="Titre du poste" value="{{ annonce.titre|default:'' }}" required>
+    </div>
+
+    <div class="input-group">
+        <label for="description">Description du stage</label>
+        <textarea id="description" name="description" rows="5" placeholder="Décrivez les missions et responsabilités" required>{{ annonce.description|default:'' }}</textarea>
+    </div>
+
+    <div class="input-group">
+        <label for="domain">Domaine d'activité</label>
+        <select id="domain" name="domain" required>
+            <option value="" disabled {% if not annonce %}selected{% endif %}>Sélectionnez un domaine</option>
+            <option value="informatique" {% if annonce.domaine == 'Informatique' %}selected{% endif %}>Informatique</option>
+            <option value="marketing" {% if annonce.domaine == 'marketing' %}selected{% endif %}>Marketing</option>
+            <option value="finance" {% if annonce.domaine == 'finance' %}selected{% endif %}>Finance</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="location">Lieu du stage</label>
+        <select id="location" name="location" required>
+            <option value="" disabled {% if not annonce %}selected{% endif %}>Sélectionnez un lieu</option>
+            <option value="Yaoundé" {% if annonce.lieu == 'Yaoundé' %}selected{% endif %}>Yaoundé</option>
+            <option value="Douala" {% if annonce.lieu == 'Douala' %}selected{% endif %}>Douala</option>
+            <option value="Baffoussam" {% if annonce.lieu == 'Baffoussam' %}selected{% endif %}>Baffoussam</option>
+            <option value="Buea" {% if annonce.lieu == 'Buea' %}selected{% endif %}>Buea</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="type">Type de stage</label>
+        <select id="type" name="type" required>
+            <option value="" disabled {% if not annonce %}selected{% endif %}>Sélectionnez un type</option>
+            <option value="Académique" {% if annonce.type == 'Académique' %}selected{% endif %}>Académique</option>
+            <option value="Professionnel" {% if annonce.type == 'Professionnel' %}selected{% endif %}>Professionnel</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="duration">Durée du stage</label>
+        <select id="duration" name="duration" required>
+            <option value="" disabled {% if not annonce %}selected{% endif %}>Sélectionnez une durée</option>
+            <option value="1 mois" {% if annonce.dure == '1 mois' %}selected{% endif %}>1 mois</option>
+            <option value="2-3 mois" {% if annonce.dure == '2-3 mois' %}selected{% endif %}>2-3 mois</option>
+            <option value="3-6 mois" {% if annonce.dure == '3-6 mois' %}selected{% endif %}>3-6 mois</option>
+            <option value="+6 mois" {% if annonce.dure == '+6 mois' %}selected{% endif %}>+6 mois</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="start-date">Date limite de souscription:</label>
+        <input type="date" id="start-date" name="start-date" value="{{ annonce.date_limite|date:'Y-m-d'|default:'' }}" required>
+    </div>
+
+    <h3>Profil recherché</h3>
+
+    <div class="input-group">
+        <label for="level">Niveau d'études requis</label>
+        <select id="level" name="level" required>
+            <option value="Qualifications avant bac" {% if annonce.niveau_etude == 'Qualifications avant bac' %}selected{% endif %}>Qualifications avant bac</option>
+            <option value="bac" {% if annonce.niveau_etude == 'bac' %}selected{% endif %}>Bac</option>
+            <option value="Bac +1" {% if annonce.niveau_etude == 'Bac +1' %}selected{% endif %}>Bac +1</option>
+            <option value="Bac +2" {% if annonce.niveau_etude == 'Bac +2' %}selected{% endif %}>Bac +2</option>
+            <option value="Bac +3" {% if annonce.niveau_etude == 'Bac +3' %}selected{% endif %}>Bac +3</option>
+            <option value="Bac +4" {% if annonce.niveau_etude == 'Bac +4' %}selected{% endif %}>Bac +4</option>
+            <option value="Bac +5 et plus" {% if annonce.niveau_etude == 'Bac +5 et plus' %}selected{% endif %}>Bac +5 et plus</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="languages">Langues requises</label>
+        <select id="languages" name="languages" required>
+            <option value="" disabled {% if not annonce %}selected{% endif %}>Sélectionnez une langue</option>
+            <option value="Francais" {% if annonce.langue_requises == 'Francais' %}selected{% endif %}>Français</option>
+            <option value="anglais" {% if annonce.langue_requises == 'anglais' %}selected{% endif %}>Anglais</option>
+            <option value="Francais et anglais" {% if annonce.langue_requises == 'Francais et anglais' %}selected{% endif %}>Français et anglais</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn-login">
+        {% if annonce %}Modifier l'annonce{% else %}Créer Annonce{% endif %}
+    </button>
+</form>
+
+    </section>
+
+</body>
+
+</html>

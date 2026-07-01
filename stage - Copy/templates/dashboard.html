@@ -1,0 +1,55 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style/dash2.css' %}">
+<link rel="stylesheet" href="{% static 'style/root.css' %}">
+
+<div class="sidebar">
+    <!-- User info -->
+    <div class="user-info">
+        {% if user.type_utilisateur == 'recruteur' %}
+            <div class="image-container">
+                <img src="{% static 'assets/dashboard/profil_Main.svg' %}" alt="Avatar" id="logoDash">
+            </div>
+        {% else %}
+            <img src="{% static 'assets/dashboard/profil_Main.svg' %}" alt="Avatar">
+        {% endif %}
+
+        <div>
+            <h3 id="nomU">{{ user.etudiant.nom |default:user.recruteur.nom_entreprise}} {{ user.etudiant.prenom }}</h3>
+            <p id="emailU">{{ user.email }}</p>
+        </div>
+    </div>
+
+    <span></span>
+
+    <!-- Annonces Section -->
+    <h4>Annonces</h4>
+    <div>
+        {% if user.type_utilisateur == 'recruteur' %}
+            <a href="{% url 'creer_annonce' %}"><img src="{% static 'assets/dashboard/creerAnnonce.svg' %}" alt="annonce">Créer annonce</a>
+            <a href="{% url 'annonce_liste' %}"><img src="{% static 'assets/dashboard/annonces.svg' %}" alt="annonce">Mes annonces</a>
+            <a href="{% url 'mes_candidatures' %}"><img src="{% static 'assets/dashboard/recrutement.svg' %}" alt="annonce">Recrutement</a>
+            <a href="{% url 'liste_cv' %}"><img src="{% static 'assets/dashboard/annonces.svg' %}" alt="annonce">CVthèque</a>
+
+
+        {% elif user.type_utilisateur == 'admin' %}
+            <a href="{% url 'annonce_liste' %}"><img src="{% static 'assets/dashboard/annonces.svg' %}" alt="annonce">Les annonces</a>
+            <a href="{% url 'mes_candidatures' %}"><img src="{% static 'assets/dashboard/annonces.svg' %}" alt="annonce">Les recrutements</a>
+            <a href="{% url 'liste_cv' %}"><img src="{% static 'assets/dashboard/annonces.svg' %}" alt="annonce">CVthèque</a>
+
+        {% elif user.type_utilisateur == 'etudiant' %}
+            <a href="{% url 'mes_candidatures' %}"><img src="{% static 'assets/dashboard/recrutement.svg' %}" alt="annonce">Mes candidatures</a>
+        {% endif %}
+    </div>
+
+    <span></span>
+
+    <!-- Infos Section -->
+    <h4>Infos</h4>
+    <div>
+        <a href="{% url 'profil' %}"><img src="{% static 'assets/dashboard/profil.svg' %}" alt="annonce">Profil</a>
+        <a href="#"><img src="{% static 'assets/dashboard/parametre.svg' %}" alt="annonce">Paramètres</a>
+    </div>
+
+    <!-- Déconnexion -->
+    <a href="{% url 'logout' %}" class="deconnexion"><img src="{% static 'assets/dashboard/deconnexionn.svg' %}" alt="annonce">Déconnexion</a>
+</div>

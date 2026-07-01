@@ -1,0 +1,65 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'style/header.css' %}">
+<link rel="stylesheet" href="{% static 'style/root.css' %}">
+
+<header>
+    <div class="logo"><img src="{% static 'image/logo2.svg' %}" alt="logo"></div>
+
+<!--    <span>{{ user}}</span>-->
+
+    <div class="menu">
+        <nav>
+            <ul>
+                <div class="div_bouton">
+                    <li id="btnNotif"><img src="{% static 'assets/icon_notif.svg' %}" alt="notif"></li>
+                    <div class="notif">
+                        <span>0</span>
+                    </div>
+                    <div class="notification-container" id="pop_notification">
+                        <h2>Notifications</h2>
+                        <div class="notification-list">
+                            <!-- Notifications dynamiques ici -->
+                        </div>
+                    </div>
+                </div>
+                <li class="profil_btn"><img src="{% static 'assets/icon_profil.svg' %}" alt="profil"></li>
+                <li id="btn_menu"><img src="{% static 'assets/icon_menu.svg' %}" alt="menu"></li>
+            </ul>
+        </nav>
+
+        <div class="popup">
+            <div class="content_pop">
+                <a href="{% url 'accueil' %}">Accueil</a>
+
+                {% if user.is_authenticated %}
+
+                     {% if request.user.type_utilisateur == 'etudiant' %}
+                        <a href="{% url 'mes_candidatures' %}">Mes candidatures</a>
+                    {% elif request.user.type_utilisateur == 'recruteur' %}
+                        <a href="{% url 'annonce_liste' %}">Mes annonces</a>
+                        <a href="{% url 'mes_candidatures' %}">Recrutement en cours</a>
+                        <a href="{% url 'liste_cv' %}">CVthèque</a>
+                    {% elif request.user.type_utilisateur == 'admin' %}
+                        <a href="{% url 'annonce_liste' %}">Les annonces</a>
+                        <a href="{% url 'mes_candidatures' %}">Les recrutements</a>
+                        <a href="{% url 'liste_cv' %}">CVthèque</a>
+
+                    {% endif %}
+
+
+                    <a href="{% url 'profil' %}">Profil</a>
+<!--                    <a href="{% url 'parametres' %}">Paramètres</a>-->
+                    <a href="{% url 'logout' %}" class="deconnexion">Déconnexion</a>
+
+
+                {% else %}
+                  <li><a href="{% url 'connexion' %}">Connexion</a></li>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div id="notification" class="notification"></div>

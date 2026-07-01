@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style/tableau.css' %}">
+    <script src="{% static 'script/common.js' %}" defer></script>
+    <script src="{% static 'script/annonceListe.js' %}" defer></script>
+    <title>Liste des annonces</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    {% include 'dashboard.html' %}
+
+    <div class="containerTableau">
+        <h1>Liste des annonces</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Titre de l'annonce</th>
+                    <th>Type de stage</th>
+                    <th>Date de Publication</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="corpsTab">
+                {% for annonce in annonces %}
+                <tr>
+                    <td>{{ annonce.titre }}</td>
+                    <td>{{ annonce.type }}</td>
+                    <td>{{ annonce.date_creat|date:"d/m/Y" }}</td>
+                    <td>{{ annonce.statut_annonce }}</td>
+                    <td>
+                        <div class="action-icons">
+                            <a href="{% url 'details_annonce' id=annonce.id %}" class="icon view"><img src="{% static 'assets/voir.svg' %}" alt="voir"></a>
+                            <a href="{% url 'modifier_annonce' annonce.id %}" class="icon edit"><img src="{% static 'assets/modifier.svg' %}" alt="modifier"></a>
+<!--                            <a href="{% url 'supprimer_annonce' annonce.id %}" class="icon delete"><img src="{% static 'assets/supprimer.svg' %}" alt="supprimer"></a>-->
+                            <div class="icon delete" id="{{annonce.id}}"><img src="{% static 'assets/supprimer.svg' %}" alt="supprimer"></div>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">Aucune annonce trouvée.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

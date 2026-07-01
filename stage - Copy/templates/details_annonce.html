@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détail de l'annonce</title>
+    <link rel="stylesheet" href="{% static 'style/details_annonce2.css' %}">
+    <link rel="stylesheet" href="{% static 'style/pop.css' %}">
+    <link rel="stylesheet" href="{% static 'style/formulaire.css' %}">
+    <link rel="stylesheet" href="{% static 'style/chat.css' %}">
+
+    <script src="{% static 'script/common.js' %}" defer></script>
+    <script src="{% static 'script/details_annonce.js' %}" defer></script>
+    <script src="{% static 'script/signaler.js' %}" defer></script>
+    <script src="{% static 'script/candidature.js' %}" defer></script>
+</head>
+
+<body>
+    {% include 'header.html' %}
+
+
+{% if messages %}
+  {% for message in messages %}
+    <div id="message-popup" class="{{ message.tags }}">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+
+
+    <main>
+        <section class="detailAnnonces" id="infoOffre">
+            <div class="partie1">
+                <div class="enTete">
+                    <h1>{{ annonce.titre }} </h1>
+                    {% if user.is_authenticated and user.type_utilisateur == 'admin' %}
+                    <select id="etatAnnonce" name="etatAnnonce" class="filter-btn">
+                        <option value="En ligne">En ligne</option>
+                        <option value="En attente de publication">En attente de publication</option>
+                    </select>
+                    {% endif %}
+                </div>
+
+                <div class="info">
+                    <div class="date"><img src="{% static 'assets/Error.svg' %}" alt="Erreur"><span>{{ annonce.date_limite }}</span></div>
+                    <div class="school"><img src="{% static 'assets/School.svg' %}" alt="Type"><span>{{ annonce.type }}</span></div>
+                    <div class="time"><img src="{% static 'assets/time.svg' %}" alt="Durée"><span>{{ annonce.dure }}</span></div>
+                </div>
+
+                <div class="info_autre">
+                    <div><h4>Domaine d'activité:</h4><span>{{ annonce.domaine }}</span></div>
+                    <div><h4>Lieu:</h4><span>{{ annonce.lieu }}</span></div>
+                    <div><h4>Durée:</h4><span>{{ annonce.dure }}</span></div>
+                    <div><h4>Qualification requise:</h4><span>{{ annonce.niveau_etude }}</span></div>
+                    <div><h4>Langue:</h4><span>{{ annonce.langue_requises }}</span></div>
+                    <div><h4>Publié le:</h4><span>{{ annonce.date_creat }}</span></div>
+                </div>
+
+                <div class="descrition">
+                    <h3>Description</h3>
+                    <p>{{ annonce.description }}</p>
+                </div>
+
+                <div class="signalement">
+
+                    {%  if user.is_authenticated and user.type_utilisateur == 'etudiant' %}
+                        <button class="btn-login_2" id="btnPostuler">Postuler</button>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                        <button class="btn-signal" id="btnSignaler">Signaler</button>
+                    {% endif %}
+
+
+
+                    {% if not user.is_authenticated  %}
+                        <button class="btn-login_2" onclick="window.location.href='{% url 'connexion' %}'">Postuler</button>
+                     {% endif %}
+
+
+
+                    <!-- Signalement Popup -->
+                    <div class="popup-container" id="popupSignalemtn">
+                        <div class="overlay"></div>
+                        <div class="login-container popupDoc">
+                            <span class="close-arrow">&#x2192;</span>
+                            <div class="titre"><h1>Signaler l'annonce</h1></div>
+                            <form id="formSignalement"  method="POST" action="{% url 'signaler' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="annonce_id" value="{{ annonce.id }}">
+                                <div class="input-group">
+                                    <label for="reason">Pour quelle raison ? *</label>
+                                    <select id="reason" name="raison" required>
+                                        <option value="spam">Spam</option>
+                                        <option value="fraud">Fraude</option>
+                                        <option value="inappropriate">Inapproprié</option>
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="details">Dites-nous en plus *</label>
+                                    <textarea id="details" name="commentaire" minlength="20" required></textarea>
+                                    <span id="char-count">Encore 20 caractères (min 20)</span>
+                                </div>
+                                <button type="submit" class="btn-signal plein">Signaler</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="partie2">
+                <div class="job-details">
+                    <div class="logo"><img id="logo" src="{% static annonce.recruteur.logo %}" alt="Logo entreprise"></div>
+                    <h2 id="nom_entreprise">{{ annonce.recruteur.nom_entreprise }}</h2>
+                    <div class="info_autre">
+                        <div><h4>Secteur d'activité:</h4><span>{{ annonce.recruteur.secteur }}</span></div>
+                        <div><h4>Site internet:</h4><span>{{ annonce.recruteur.site_internet }}</span></div>
+                        <div><h4>Forme légale:</h4><span>{{ annonce.recruteur.forme_legale }}</span></div>
+                        <div><h4>Adresse:</h4><span>{{ annonce.recruteur.adresse_entreprise }}</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Popup Postuler -->
+    <div class="popup-container" id="popupPostuler">
+        <div class="overlay"></div>
+        <div class="login-container popupDoc">
+            <span class="close-arrow fermer">&#x2192;</span>
+            <div class="titre"><h1>Mes documents</h1></div>
+            <form id="uploadForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="cv">CV (PDF/Word, max 3MB):</label>
+                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                    <span id="cvError" class="error"></span>
+                </div>
+                <div class="input-group">
+                    <label for="motivation">Lettre de motivation (PDF/Word, max 3MB):</label>
+                    <input type="file" id="motivation" name="motivation" accept=".pdf,.doc,.docx" required>
+                    <span id="motivationError" class="error"></span>
+                </div>
+                <button type="submit" class="btn-login">Soumettre</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Popup Revue Candidature -->
+    <div class="popup-container" id="revueCandidature">
+        <div class="overlay"></div>
+        <div class="revu">
+            <div class="titreSoum"><h1>Revue de votre candidature avant envoi :</h1></div>
+            <div class="infoEnvoyer longueur">
+                <div class="documents personnel">
+                    <h3>Informations personnelles :</h3>
+                    <div class="job-meta" id="infoUser">
+                        <p><strong>Nom: </strong><span>{{ user.etudiant.nom }}</span></p>
+                        <p><strong>Prénom: </strong><span>{{ user.etudiant.prenom }}</span></p>
+                        <p><strong>age: </strong><span>{{user.etudiant.age }}</span></p>
+                        <p><strong>Sexe: </strong><span>{{ user.etudiant.sexe }}</span></p>
+                        <p><strong>Email: </strong><span>{{ user.email }}</span></p>
+                        <p><strong>Téléphone: </strong><span>{{ user.etudiant.telephone }}</span></p>
+                        <p><strong>Adresse: </strong><span>{{ user.etudiant.adresse }}</span></p>
+                    </div>
+                </div>
+                <div class="documents">
+                    <h3>Documents envoyés</h3>
+                    <div class="liens">
+                        <div><strong>CV :</strong><span id="cvName"></span></div>
+                        <div><strong>Lettre de motivation :</strong><span id="lettre"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="mesBouton">
+                <button type="submit" class="btn-login" id="envoyer">Soumettre</button>
+                <button class="btn-signal plein" id="annuler">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+
+{% include 'footer.html' %}
+</body>
+</html>

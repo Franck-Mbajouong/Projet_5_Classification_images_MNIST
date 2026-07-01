@@ -1,0 +1,29 @@
+{% load static %}
+    <link rel="stylesheet" href="{% static 'style/footer.css' %}">
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-links">
+            <h3>Liens utiles</h3>
+            <ul>
+                <li><a href="{% url 'accueil' %}">Accueil</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h3>Contact</h3>
+            <p>Email : nkouayamidrel@gmail.com</p>
+            <p>Téléphone : +237 697 52 50 31</p>
+        </div>
+        <div class="footer-social">
+            <h3>Suivez-nous</h3>
+            <ul>
+                <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 CamStage. Tous droits réservés.</p>
+    </div>
+</footer>

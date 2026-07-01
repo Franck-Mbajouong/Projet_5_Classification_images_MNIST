@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+
+    <link rel="stylesheet" href="{% static 'style/accueil.css' %}">
+    <link rel="stylesheet" href="{% static 'style/header.css' %}">
+    <script src="{% static 'script/common.js' %}" defer></script>
+    <script src="{% static 'script/affiche_annonce.js' %}" defer></script>
+
+    <link rel="stylesheet" href="{% static 'style/ia.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="{% static 'script/chatbot.js' %}" defer></script>
+</head>
+
+<body>
+
+    {% include 'header.html' %}
+
+    <main>
+        <section class="section1">
+            <div><img src="{% static 'assets/asset1.svg' %}" alt="asset1"></div>
+
+            <div class="milieux">
+                <div class="img">
+                    <img src="{% static 'assets/texte2.svg' %}" alt="clics">
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="search">
+                    <button type="submit">
+                        <span class="search-text">Rechercher</span>
+                        <img src="{% static 'assets/loupe.svg' %}" alt="loupe">
+                    </button>
+                </div>
+
+                <!-- Filtres -->
+                <div class="buttons">
+                    <div class="div_bouton">
+                        <button class="filter-btn" contenu="Lieu">Lieu <img src="{% static 'assets/fleche.svg' %}" alt="fleche"></button>
+                        <div class="popup">
+                            <div class="content_pop">
+                                <a href="#">Yaoundé</a>
+                                <a href="#">Douala</a>
+                                <a href="#">Baffoussam</a>
+                                <a href="#">Buea</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="div_bouton">
+                        <button class="filter-btn" contenu="type">Type <img src="{% static 'assets/fleche.svg' %}" alt="fleche"></button>
+                        <div class="popup">
+                            <div class="content_pop">
+                                <a href="#">Académique</a>
+                                <a href="#">Professionnel</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="div_bouton">
+                        <button class="filter-btn" contenu="dure">Durée <img src="{% static 'assets/fleche.svg' %}" alt="fleche"></button>
+                        <div class="popup">
+                            <div class="content_pop">
+                                <a href="#">1 mois</a>
+                                <a href="#">2-3 mois</a>
+                                <a href="#">3-6 mois</a>
+                                <a href="#">+6 mois</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="div_bouton">
+                        <button class="filter-btn" contenu="domaine">Domaine d'activité <img src="{% static 'assets/fleche.svg' %}" alt="fleche"></button>
+                        <div class="popup">
+                            <div class="content_pop">
+                                <a href="#">Informatique</a>
+                                <a href="#">Médecine</a>
+                                <a href="#">Marketing</a>
+                                <a href="#">Finance</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fleche">
+                        <img src="{% static 'assets/croix2.svg' %}" alt="croix">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <img src="{% static 'assets/asset2.svg' %}" alt="asset2">
+            </div>
+        </section>
+
+        <section class="section2">
+            <div class="entete">
+                <span class="resultat">Offres de stage :</span>
+                <span class="AnnoncesTitre"><span id="nbrAnnonce">29</span> annonces</span>
+            </div>
+
+            <div class="container_annonces">
+
+            </div>
+        </section>
+    </main>
+
+{% if user.is_authenticated %}
+    <div id="chatbot-icon-container">
+        <div id="chatbot-icon">
+            <i class="fas fa-comment-dots"></i>
+        </div>
+    </div>
+
+{% endif %}
+
+
+    <div id="chatbot-container">
+
+        <div id="chatbot-header">
+            <p>Assistant Camstage 🤖</p>
+            <span class="close-btn"><i class="fas fa-times"></i></span>
+        </div>
+
+        <div id="chat-box">
+            </div>
+
+        <form id="chat-form">
+            <input type="text" id="user-input" placeholder="Écrivez votre message...">
+            <button type="submit">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </form>
+
+    </div>
+
+
+    {% include 'footer.html' %}
+
+</body>
+
+</html>
